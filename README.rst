@@ -13,7 +13,6 @@ Features
 * Add Nodes Module
 * Add test coverage
 
-========
 Usage
 ========
 

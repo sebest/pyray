@@ -2,14 +2,14 @@
 pyray
 ===============================
 
-.. image:: https://badge.fury.io/py/pyray.png
-    :target: http://badge.fury.io/py/pyray
+.. .. image:: https://badge.fury.io/py/pyray.png
+..     :target: http://badge.fury.io/py/pyray
 
-.. image:: https://travis-ci.org/intr1nsic/pyray.png?branch=master
-        :target: https://travis-ci.org/intr1nsic/pyray
+.. .. image:: https://travis-ci.org/intr1nsic/pyray.png?branch=master
+..         :target: https://travis-ci.org/intr1nsic/pyray
 
-.. image:: https://pypip.in/d/pyray/badge.png
-        :target: https://crate.io/packages/pyray?version=latest
+.. .. image:: https://pypip.in/d/pyray/badge.png
+..         :target: https://crate.io/packages/pyray?version=latest
 
 
 A python client to interact with the Riverbed Stingray REST API.

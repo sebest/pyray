@@ -150,6 +150,23 @@ or quickly undrain all draining nodes::
     pool = cl.pools.get(name='pool1')
     pool.undrain_nodes(nodes=pool.draining_nodes)
 
+Nodes
+-----
+
+To add a node::
+
+    from pyray import client
+    cl = client.HTTPClient('https://1.1.1.1', 'admin', 'password')
+    pool = cl.pools.get(name='pool1')
+    pool.add_node('1.1.1.2', 80)
+
+or to remove a node::
+
+    from pyray import client
+    cl = client.HTTPClient('https://1.1.1.1', 'admin', 'password')
+    pool = cl.pools.get(name='pool1')
+    pool.remove_node('1.1.1.2', 80)
+
 Query node details in a pool
 ============================
 

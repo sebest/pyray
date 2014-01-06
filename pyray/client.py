@@ -8,7 +8,8 @@ from pyray import pools
 class HTTPClient(object):
     """ Client for communicating to the Riverbed Stingray API """
 
-    USER_AGENT = 'pyray-client'
+    USER_AGENT = "pyray-client"
+    API_ENDPOINT = "/api/tm/2.0"
 
     def __init__(self, service_url, username, password,
                  port=9070, verify_ssl=False, debug=False):
@@ -25,17 +26,16 @@ class HTTPClient(object):
         :type password: str
         :param port: Port used to contact the load balancer API. Default: 9070
         :type port: str
-        :param verify_ssl: Verify SSL validation. Default: False
+        :param verify_ssl: Verify SSL. Default: False
         :type verify_ssl: bool
         """
         self.username = username
         self.password = password
-        self.service_url = service_url.rstrip('/')
         self.port = port
         self.debug = debug
         self.timeout = float(30)
         self.verify_ssl = True if verify_ssl else False
-        self.api_url = self.set_api_url(self.service_url, self.port)
+        self.service_url = self.set_service_url(service_url, port)
 
         self.times = []  # [("item", starttime, endtime), ...]
 
@@ -55,7 +55,7 @@ class HTTPClient(object):
         self.http.verify = self.verify_ssl
         self.logged_in = self._authenticate()
 
-    def set_api_url(self, service_url, port):
+    def set_service_url(self, service_url, port):
         """
         Generate the full API url with the proper scheme and port
 
@@ -66,9 +66,10 @@ class HTTPClient(object):
         :rtype: str
         """
         if not service_url.startswith('https://'):
-            self.service_url = 'https://{}'.format(service_url)
-        return '{service_url}:{port}'.format(service_url=self.service_url,
-                                             port=self.port)
+            service_url = 'https://{}'.format(service_url)
+        return '{service_url}:{port}{api_endpoint}'.format(service_url=service_url,
+                                                            port=port,
+                                                            api_endpoint=self.API_ENDPOINT)
 
     def _authenticate(self):
         """
@@ -78,12 +79,12 @@ class HTTPClient(object):
         :rtype: bool
         """
         method = "GET"
-        test_url = self.api_url + '/api/tm/2.0'
+        test_url = "/"
         self.http.auth = (self.username, self.password)
 
         resp, respbody = self.time_request(test_url, method)
         if resp.status_code is not 200:
-            raise exceptions.AuthorizationFailure('Invalid Credentials. Unable to login')
+            raise exceptions.AuthorizationFailure('Invalid Credentials.')
         else:
             return True
 
@@ -160,14 +161,15 @@ class HTTPClient(object):
         :type kwargs: dict
         :rtype: tuple
         """
+        request_url = self.service_url + url
         kwargs.setdefault('headers', kwargs.get('headers', {}))
         kwargs['headers']['User-Agent'] = self.USER_AGENT
         if 'data' in kwargs:
             kwargs['headers']['Content-Type'] = 'application/json'
             kwargs['data'] = json.dumps(kwargs['data'])
 
-        self.http_log_req(method, url, kwargs)
-        resp = self.http.request(method, url, **kwargs)
+        self.http_log_req(method, request_url, kwargs)
+        resp = self.http.request(method, request_url, **kwargs)
         self.http_log_resp(resp)
 
         if resp.text:

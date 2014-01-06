@@ -22,8 +22,13 @@ class NodeNotInPool(Exception):
     """
     pass
 
-class DrainError(Exception):
+class ValidationError(Exception):
     """
-    Return when a set contains duplicates
+    Return when PUT/POST returns an error
     """
     pass
+
+class NodeAlreadyExists(Exception):
+    """
+    Return when a node already exists in a pool
+    """

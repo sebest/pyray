@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-TestHTTPClient
+TestClient
 ----------------------------------
 
 Tests for `pyray` module.
@@ -20,7 +20,7 @@ def assert_reset():
     assert len(responses._default_mock._urls) == 0
     assert len(responses.calls) == 0
 
-class TestHTTPClient(unittest.TestCase):
+class TestClient(unittest.TestCase):
 
     def test_correct_login(self):
         """
@@ -30,7 +30,7 @@ class TestHTTPClient(unittest.TestCase):
 
         @responses.activate
         def run():
-            responses.add(responses.GET, 'https://dev-api:9070/api/tm/2.0',
+            responses.add(responses.GET, 'https://dev-api:9070/api/tm/2.0/',
                           body='{"children":[]}', status=200,
                           content_type='application/json')
             self.assertTrue(client.HTTPClient(service_url='dev-api',
@@ -47,7 +47,7 @@ class TestHTTPClient(unittest.TestCase):
         """
         @responses.activate
         def run():
-            responses.add(responses.GET, 'https://dev-api:9070/api/tm/2.0',
+            responses.add(responses.GET, 'https://dev-api:9070/api/tm/2.0/',
                           body='{"children":[]}', status=401,
                           content_type='application/json')
             self.assertRaises(exceptions.AuthorizationFailure,

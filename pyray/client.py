@@ -178,6 +178,8 @@ class HTTPClient(object):
                 body = json.loads(resp.text)
             except ValueError:
                 body = None
+        else:
+            body = None
         return resp, body
 
     def response_error(self, resp):

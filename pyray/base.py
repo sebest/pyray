@@ -15,6 +15,9 @@ class Resource(object):
 
         :rtype: dict
         """
+        if self.manager.api_version < 2:
+            raise NotImplementedError("API version not supported")
+
         method = "GET"
         resp, respbody = self.manager.time_request(
                                 self.service_url + self.STATUS_BASE, method)

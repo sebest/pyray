@@ -9,9 +9,8 @@ class HTTPClient(object):
     """ Client for communicating to the Riverbed Stingray API """
 
     USER_AGENT = "pyray-client"
-    API_ENDPOINT = "/api/tm/2.0"
 
-    def __init__(self, service_url, username, password,
+    def __init__(self, service_url, username, password, version=2,
                  port=9070, verify_ssl=False, debug=False):
         """
         Initiate a client to query the Riverbed Stingray API.
@@ -34,6 +33,8 @@ class HTTPClient(object):
         self.port = port
         self.debug = debug
         self.timeout = float(30)
+        self.api_version = version
+        self.api_endpoint = "/api/tm/{0:.1f}".format(version)
         self.verify_ssl = True if verify_ssl else False
         self.service_url = self.set_service_url(service_url, port)
 
@@ -69,7 +70,7 @@ class HTTPClient(object):
             service_url = 'https://{}'.format(service_url)
         return '{service_url}:{port}{api_endpoint}'.format(service_url=service_url,
                                                             port=port,
-                                                            api_endpoint=self.API_ENDPOINT)
+                                                            api_endpoint=self.api_endpoint)
 
     def _authenticate(self):
         """

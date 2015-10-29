@@ -156,6 +156,20 @@ class Pool(Resource):
                 nodes[node['name']] = respbody
         return nodes
 
+    def get_node_stats(self, node):
+        """
+        Return statistics for a node within a pool.
+        """
+        method = "GET"
+        node_in_pool_stats_url = '/status/local_tm/statistics/nodes/per_pool_node/' + self.pool_name + '-' + node
+
+        resp, respbody = self.manager.time_request(node_in_pool_stats_url, method)
+
+        if resp.status_code is not 200:
+            raise exceptions.NodeNotInPool('Get node in pool stats error: {}'.format(respbody))
+        else:
+            return respbody['statistics']
+
     def add_node(self, address, port):
         """
         Add a node to the pool. Return the new pool configuration dictionary.

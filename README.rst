@@ -51,7 +51,7 @@ are not displayed in any logging.::
 To allow insecure SSL connectivity for invalid certs::
 
     from pyray import client
-    cl = client.HTTPClient('https://1.1.1.1', 'admin', 'password', insecure=True)
+    cl = client.HTTPClient('https://1.1.1.1', 'admin', 'password', verify_ssl=False)
 
 You can also change the port if that is configured::
 
@@ -68,7 +68,7 @@ To list all the pools configured::
 
     from pyray import client
     cl = client.HTTPClient('https://1.1.1.1', 'admin', 'password')
-    pools = cl.pools.get()
+    pools = cl.pools.all()
     for pool in pools:
         print pool
 

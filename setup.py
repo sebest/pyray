@@ -31,6 +31,7 @@ setup(
     package_dir={'pyray': 'pyray'},
     include_package_data=True,
     install_requires=[
+        'requests',
     ],
     license="BSD",
     zip_safe=False,
